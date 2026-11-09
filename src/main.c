@@ -10,30 +10,35 @@
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
 
-int main(void)
+void thread_led_blinky(void *p1, void *p2, void *p3)
 {
     int ret;
 
     if (!gpio_is_ready_dt(&led)) {
         printk("LED GPIO controller is not ready\n");
-        return 0;
+        return;
     }
 
     ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
     if (ret < 0) {
         printk("Failed to configure LED: %d\n", ret);
-        return 0;
+        return;
     }
 
-    printk("Zephyr STM32F4 Discovery: toggling LED on PE4\n");
+    printk("Exercise 1: Asymmetric LED Blink on PE4\n");
 
     while (1) {
-        ret = gpio_pin_toggle_dt(&led);
-        if (ret < 0) {
-            printk("Failed to toggle LED: %d\n", ret);
-        }
-        k_msleep(50);
-    }
+        gpio_pin_set_dt(&led, 1);
+        k_msleep(1000);
 
+        gpio_pin_set_dt(&led, 0);
+        k_msleep(2000);
+    }
+}
+
+K_THREAD_DEFINE(blinky_thread_id, 1024, thread_led_blinky, NULL, NULL, NULL, 7, 0, 0);
+
+int main(void)
+{
     return 0;
 }
