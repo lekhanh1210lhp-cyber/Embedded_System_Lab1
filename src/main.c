@@ -20,7 +20,7 @@ void thread_led_blinky(void *p1, void *p2, void *p3)
         return;
     }
 
-    gpio_pin_configure_dt(&led0, GPIO_OUTPUT_INACTIVE);
+    gpio_pin_configure_dt(&led0, GPIO_OUTPUT_ACTIVE);
 
     while (1) {
         shared_led_state = true;
@@ -39,7 +39,7 @@ void thread_y0_follow(void *p1, void *p2, void *p3)
         return;
     }
 
-    gpio_pin_configure_dt(&led1, GPIO_OUTPUT_INACTIVE);
+    gpio_pin_configure_dt(&led1, GPIO_OUTPUT_ACTIVE);
 
     while (1) {
         if (shared_led_state) {
