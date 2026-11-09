@@ -32,7 +32,7 @@ int main(void)
         if (ret < 0) {
             printk("Failed to toggle LED: %d\n", ret);
         }
-        k_msleep(500);
+        k_msleep(50);
     }
 
     return 0;
