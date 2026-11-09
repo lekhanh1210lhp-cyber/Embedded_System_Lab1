@@ -8,30 +8,21 @@
 #error "No led0 alias defined in devicetree"
 #endif
 
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED_NODE, gpios);
+static const struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
 
 void thread_led_blinky(void *p1, void *p2, void *p3)
 {
-    int ret;
-
-    if (!gpio_is_ready_dt(&led)) {
-        printk("LED GPIO controller is not ready\n");
+    if (!gpio_is_ready_dt(&led0)) {
         return;
     }
 
-    ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
-    if (ret < 0) {
-        printk("Failed to configure LED: %d\n", ret);
-        return;
-    }
-
-    printk("Exercise 1: Asymmetric LED Blink on PE4\n");
+    gpio_pin_configure_dt(&led0, GPIO_OUTPUT_INACTIVE);
 
     while (1) {
-        gpio_pin_set_dt(&led, 1);
+        gpio_pin_set_dt(&led0, 1);
         k_msleep(1000);
 
-        gpio_pin_set_dt(&led, 0);
+        gpio_pin_set_dt(&led0, 0);
         k_msleep(2000);
     }
 }
