@@ -1,0 +1,51 @@
+/* app.overlay - Overlay cho BKIT ARM4 (STM32F407ZGT6) */
+/ {
+    model = "BKIT ARM4 (STM32F407ZGT6)";
+
+    chosen {
+        zephyr,console = &usart1;
+        zephyr,shell-uart = &usart1;
+    };
+
+    leds {
+        debug_led: led_debug {
+            gpios = <&gpioe 4 GPIO_ACTIVE_HIGH>;
+            label = "LED3 DEBUG (PE4)";
+        };
+
+        output_y0: output_y0 {
+            gpios = <&gpioe 5 GPIO_ACTIVE_HIGH>;
+            label = "OUTPUT Y0 (PE5)";
+        };
+
+        output_y1: output_y1 {
+            gpios = <&gpioe 6 GPIO_ACTIVE_HIGH>;
+            label = "OUTPUT Y1 (PE6)";
+        };
+    };
+
+    aliases {
+        led0 = &debug_led;
+        led1 = &output_y0;
+        led2 = &output_y1;
+        /delete-property/ led3;
+    };
+};
+
+&usart1 {
+    pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
+    pinctrl-names = "default";
+    current-speed = <115200>;
+    status = "okay";
+};
+
+/* Vô hiệu hóa ngoại vi bị xung đột */
+&usart2 { status = "disabled"; };
+&can1 { status = "disabled"; };
+&can2 { status = "disabled"; };
+&i2c1 { status = "disabled"; };
+&i2s3 { status = "disabled"; };
+&adc1 { status = "disabled"; };
+&timers2 { status = "disabled"; };
+&timers4 { status = "disabled"; };
+&usbotg_fs { status = "disabled"; };
